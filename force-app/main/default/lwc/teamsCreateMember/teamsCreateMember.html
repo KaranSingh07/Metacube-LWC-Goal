@@ -1,0 +1,44 @@
+<template>
+	<lightning-card title="New Team Member">
+		<lightning-spinner if:true={isLoading} alternative-text="Loading..." size="small">
+		</lightning-spinner>
+		<div if:true={showContent} class="slds-grid slds-grid_vertical slds-var-p-around_medium">
+			<div class="slds-col">
+				<lightning-input
+					data-id="memberName"
+					type="text"
+					label="Name"
+					onchange={handleMemberNameChange}
+					required
+				></lightning-input>
+			</div>
+			<div class="slds-col">
+				<lightning-combobox
+					data-id="memberTeam"
+					label="Team"
+					options={teams}
+					onchange={handleMemberTeamChange}
+					required
+				></lightning-combobox>
+			</div>
+			<div class="slds-col">
+				<lightning-input
+					data-id="memberSkills"
+					type="text"
+					label="Skills"
+					onchange={handleMemberSkillsChange}
+					required
+				></lightning-input>
+			</div>
+			<div class="slds-col slds-var-p-vertical_medium">
+				<lightning-button
+					variant="brand"
+					label="Create"
+					title="createMember"
+					onclick={handleCreateMember}
+					class="slds-var-m-left_x-small"
+				></lightning-button>
+			</div>
+		</div>
+	</lightning-card>
+</template>
