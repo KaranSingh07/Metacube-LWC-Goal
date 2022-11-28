@@ -1,0 +1,9 @@
+<template>
+	<div class="slds-var-m-bottom_small">
+		<c-teams-create-member
+			onupdateteams={handleUpdateTeams}
+			onsyncdata={handleSyncData}
+		></c-teams-create-member>
+	</div>
+	<c-teams-member-list teams={teams}></c-teams-member-list>
+</template>
