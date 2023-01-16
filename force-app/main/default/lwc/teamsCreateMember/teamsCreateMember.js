@@ -58,15 +58,6 @@ export default class TeamsCreateMember extends LightningElement {
 			});
 	}
 
-	createTeamOptions(teamData) {
-		let teamOptions = [];
-		teamData.forEach((team) => {
-			teamOptions.push(this.createPicklistOption(team.Name, team.Id));
-		});
-		this.state.teams = teamOptions;
-		this.dispatchCustomEvent('updateteams', { teams: this.state.teams });
-	}
-
 	createPicklistOption(label, value) {
 		return { label: label, value: value };
 	}
