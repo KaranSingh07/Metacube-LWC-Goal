@@ -1,39 +1,20 @@
-import { LightningElement, track } from 'lwc';
+import { api, LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { LABELS } from './labels';
-import getTeams from '@salesforce/apex/TeamController.getTeams';
 import createTeamMember from '@salesforce/apex/TeamController.createTeamMember';
 
 export default class TeamsCreateMember extends LightningElement {
+	@api teams;
+
 	@track state = {
-		teams: [],
 		newMember: {
 			name: '',
 			skills: '',
 			teamId: '',
 		},
-		isLoading: true,
+		isLoading: false,
 		isError: false,
 	};
-
-	async connectedCallback() {
-		this.showSpinner(true);
-		await this.populateTeamOptions();
-	}
-
-	async populateTeamOptions() {
-		await getTeams()
-			.then((data) => {
-				this.createTeamOptions(data);
-			})
-			.catch((error) => {
-				this.state.isError = true;
-				this.showErrorToast(LABELS.ToastErrorTitle, JSON.stringify(error));
-			})
-			.finally(() => {
-				this.showSpinner(false);
-			});
-	}
 
 	async handleCreateMember() {
 		this.showSpinner(true);
@@ -104,10 +85,6 @@ export default class TeamsCreateMember extends LightningElement {
 
 	handleMemberTeamChange(event) {
 		this.state.newMember.teamId = event.detail.value;
-	}
-
-	get teams() {
-		return this.state.teams;
 	}
 
 	get newMember() {
