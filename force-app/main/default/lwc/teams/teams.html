@@ -1,9 +1,11 @@
 <template>
-	<div class="slds-var-m-bottom_small">
-		<c-teams-create-member
-			onupdateteams={handleUpdateTeams}
-			onsyncdata={handleSyncData}
-		></c-teams-create-member>
+	<div if:true={showContent} class="slds-grid slds-grid_vertical slds-var-p-around_medium">
+		<div class="slds-var-m-bottom_small">
+			<c-teams-create-member
+				teams={teams}
+				onsyncdata={handleSyncData}
+			></c-teams-create-member>
+		</div>
+		<c-teams-member-list teams={teams}></c-teams-member-list>
 	</div>
-	<c-teams-member-list teams={teams}></c-teams-member-list>
 </template>
