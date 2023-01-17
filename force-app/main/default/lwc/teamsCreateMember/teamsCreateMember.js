@@ -1,7 +1,11 @@
 import { api, LightningElement, track } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import TEAM_MEMBER_OBJECT from '@salesforce/schema/TeamMember__c';
+import TEAM_MEMBER_NAME_FIELD from '@salesforce/schema/TeamMember__c.Name';
+import TEAM_MEMBER_SKILLS_FIELD from '@salesforce/schema/TeamMember__c.Skills__c';
+import TEAM_MEMBER_TEAM_FIELD from '@salesforce/schema/TeamMember__c.Team__c';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { LABELS } from './labels';
-import createTeamMember from '@salesforce/apex/TeamController.createTeamMember';
 
 export default class TeamsCreateMember extends LightningElement {
 	@api teams;
@@ -19,13 +23,12 @@ export default class TeamsCreateMember extends LightningElement {
 	async handleCreateMember() {
 		this.showSpinner(true);
 
-		let teamMemberWrapper = {
-			Name: this.newMember.name,
-			Skills: this.newMember.skills,
-			TeamId: this.newMember.teamId,
-		};
+		const fields = {};
+		fields[TEAM_MEMBER_NAME_FIELD.fieldApiName] = this.newMember.name;
+		fields[TEAM_MEMBER_SKILLS_FIELD.fieldApiName] = this.newMember.skills;
+		fields[TEAM_MEMBER_TEAM_FIELD.fieldApiName] = this.newMember.teamId;
 
-		await createTeamMember({ teamMemberJson: JSON.stringify(teamMemberWrapper) })
+		await createRecord({ apiName: TEAM_MEMBER_OBJECT.objectApiName, fields })
 			.then(() => {
 				this.showSuccessToast(LABELS.ToastSuccessTitle, LABELS.TeamMemberCreated);
 				this.dispatchCustomEvent('syncdata');
