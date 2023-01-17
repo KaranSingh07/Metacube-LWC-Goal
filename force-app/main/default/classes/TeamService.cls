@@ -6,7 +6,6 @@ public with sharing class TeamService {
 
 	public interface API {
 		List<TeamService.TeamWrapper> getTeams();
-		void createTeamMember(TeamService.TeamMemberWrapper teamMember);
 		List<TeamService.TeamMemberWrapper> getAllTeamMembers();
 	}
 
@@ -16,10 +15,6 @@ public with sharing class TeamService {
 
 	public static List<TeamService.TeamWrapper> getTeams() {
 		return service().getTeams();
-	}
-
-	public static void createTeamMember(TeamService.TeamMemberWrapper teamMember) {
-		service().createTeamMember(teamMember);
 	}
 
 	public static List<TeamService.TeamMemberWrapper> getAllTeamMembers() {

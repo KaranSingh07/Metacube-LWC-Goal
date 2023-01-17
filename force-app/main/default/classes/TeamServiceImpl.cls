@@ -7,14 +7,6 @@ public with sharing class TeamServiceImpl implements TeamService.API {
 		return teams;
 	}
 
-	public void createTeamMember(TeamService.TeamMemberWrapper teamMember) {
-		insert new TeamMember__c(
-			Name = teamMember.Name,
-			Skills__c = teamMember.Skills,
-			Team__c = teamMember.TeamId
-		);
-	}
-
 	public static List<TeamService.TeamMemberWrapper> getAllTeamMembers() {
 		List<TeamService.TeamMemberWrapper> teamMembers = new List<TeamService.TeamMemberWrapper>();
 		for (TeamMember__c teamMember : TeamSelector.getInstance().getTeamMembersWithTeams()) {
