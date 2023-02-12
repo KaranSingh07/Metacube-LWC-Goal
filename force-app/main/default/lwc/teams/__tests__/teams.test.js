@@ -46,4 +46,21 @@ describe('Teams Component', () => {
 		expect(await axe(component)).toHaveNoViolations();
 	});
 
+	it('Should load child components when teams are received', async () => {
+		// Given
+		getTeams.mockResolvedValue(mockTeams);
+		const component = createComponent();
+
+		// When
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// Then
+		const teamsCreateMemberComponent =
+			component.shadowRoot.querySelector('c-teams-create-member');
+		expect(teamsCreateMemberComponent).not.toBe(null);
+
+		const teamsMemberListComponent = component.shadowRoot.querySelector('c-teams-member-list');
+		expect(teamsMemberListComponent).not.toBe(null);
+	});
 });
