@@ -99,4 +99,22 @@ describe('Teams Component', () => {
 
 		expect(mockShowToastHandler).toHaveBeenCalledTimes(1);
 	});
+
+	it('Should handle syncdata event when received', async () => {
+		// Given
+		getTeams.mockResolvedValue(mockTeams);
+		const component = createComponent();
+		document.body.appendChild(component);
+
+		const mockSyncDataEventHandler = jest.fn();
+		component.addEventListener('syncdata', mockSyncDataEventHandler);
+
+		await flushPromises();
+
+		// When
+		component.dispatchEvent(new CustomEvent('syncdata'));
+
+		// Then
+		expect(mockSyncDataEventHandler).toHaveBeenCalledTimes(1);
+	});
 });
