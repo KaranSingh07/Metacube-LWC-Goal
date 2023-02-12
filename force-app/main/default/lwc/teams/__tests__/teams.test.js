@@ -14,8 +14,12 @@ jest.mock(
 	},
 	{ virtual: true }
 );
+jest.mock('c/teamsCreateMember');
+jest.mock('c/teamsMemberList');
 
-const teams = require('./data/teams.json');
+const mockTeams = require('./data/teams.json');
+const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
+
 const createComponent = () => {
 	return createElement('c-teams', {
 		is: Teams,
@@ -27,11 +31,12 @@ describe('Teams Component', () => {
 		while (document.body.firstChild) {
 			document.body.removeChild(document.body.firstChild);
 		}
+		jest.clearAllMocks();
 	});
 
 	it('Should be accessible', async () => {
 		// Given
-		getTeams.mockResolvedValue(teams);
+		getTeams.mockResolvedValue(mockTeams);
 		const component = createComponent();
 
 		// When
@@ -40,4 +45,5 @@ describe('Teams Component', () => {
 		// Then
 		expect(await axe(component)).toHaveNoViolations();
 	});
+
 });
