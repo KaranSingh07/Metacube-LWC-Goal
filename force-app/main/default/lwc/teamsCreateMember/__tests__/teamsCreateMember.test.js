@@ -35,6 +35,22 @@ describe('TeamsCreateMember Component', () => {
 		expect(await axe(component)).toHaveNoViolations();
 	});
 
+	it('Should populate teams in memberTeam combobox when component is loaded', async () => {
+		// Given
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		// When
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// Then
+		const memberTeamCombobox = component.shadowRoot.querySelector(
+			'lightning-combobox[data-id="memberTeam"]'
+		);
+		expect(memberTeamCombobox.options).toStrictEqual(mockTeams);
+	});
+
 
         // Act
         document.body.appendChild(element);
