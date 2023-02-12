@@ -22,7 +22,7 @@ export default class Teams extends LightningElement {
 			})
 			.catch((error) => {
 				this.state.isError = true;
-				this.showErrorToast(LABELS.ToastErrorTitle, JSON.stringify(error));
+				this.showErrorToast(LABELS.ToastErrorTitle, error.body.message);
 			})
 			.finally(() => {
 				this.showSpinner(false);
