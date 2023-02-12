@@ -1,6 +1,7 @@
 import Teams from 'c/teams';
 import { createElement } from 'lwc';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { setImmediate } from 'timers';
 import { getTeams } from '@salesforce/apex/TeamController.getTeams';
 
 expect.extend(toHaveNoViolations);
@@ -18,7 +19,7 @@ jest.mock('c/teamsCreateMember');
 jest.mock('c/teamsMemberList');
 
 const mockTeams = require('./data/teams.json');
-const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
+const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const createComponent = () => {
 	return createElement('c-teams', {
