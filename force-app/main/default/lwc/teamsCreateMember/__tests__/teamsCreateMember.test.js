@@ -24,6 +24,12 @@ describe('TeamsCreateMember Component', () => {
 		jest.clearAllMocks();
 	});
 
+	const mockFields = {
+		Name: 'Sachin Tendulkar',
+		Skills__c: 'Batting',
+		Team__c: 'ind',
+	};
+
 	it('Should be accessible', async () => {
 		// Given
 		const component = createComponent();
@@ -59,11 +65,6 @@ describe('TeamsCreateMember Component', () => {
 		document.body.appendChild(component);
 		await flushPromises();
 
-		const mockFields = {
-			Name: 'Sachin Tendulkar',
-			Skills__c: 'Batting',
-			Team__c: 'ind',
-		};
 		const mockCreateRecordInputParams = [{ apiName: 'TeamMember__c', fields: mockFields }];
 
 		const memberNameInput = component.shadowRoot.querySelector(
