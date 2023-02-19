@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TeamsMemberList Component Should show correct team members when a team is selected that have members, should not show warning message 1`] = `
+StaticNodeList {
+  "0": <div
+    class="tile"
+    data-id="teamMember"
+  >
+    <p>
+      Sachin Tendulkar
+    </p>
+    <p>
+      India
+    </p>
+    <p>
+      Batting
+    </p>
+  </div>,
+  "1": <div
+    class="tile"
+    data-id="teamMember"
+  >
+    <p>
+      Virat Kohli
+    </p>
+    <p>
+      India
+    </p>
+    <p>
+      Batting
+    </p>
+  </div>,
+  "2": <div
+    class="tile"
+    data-id="teamMember"
+  >
+    <p>
+      Ravindra Jadeja
+    </p>
+    <p>
+      India
+    </p>
+    <p>
+      Batting, Bowling
+    </p>
+  </div>,
+}
+`;
