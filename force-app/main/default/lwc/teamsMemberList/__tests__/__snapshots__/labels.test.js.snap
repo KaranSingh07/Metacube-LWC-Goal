@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LABELS object should contain relevant values 1`] = `
+{
+  "NoTeamMembersExistsWarning": "This team have no members. Create one from above.",
+  "NoTeamSelectedWarning": "Select a team to show their members.",
+  "TeamMembersSynced": "Team members synced successfully.",
+  "ToastErrorTitle": "Error!",
+  "ToastSuccessTitle": "Success!",
+}
+`;
