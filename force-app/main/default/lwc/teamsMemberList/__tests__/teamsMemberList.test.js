@@ -65,4 +65,26 @@ describe('TeamsMemberList Component', () => {
 		);
 		expect(memberTeamCombobox.options).toStrictEqual(mockTeams);
 	});
+
+	it('Should show correct default warning message when no team is selected, should not show team members', async () => {
+		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		// When
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// Then
+		const warningMessageComponent = component.shadowRoot.querySelector(
+			'label[data-id="warningMessage"]'
+		);
+		const teamMembers = component.shadowRoot.querySelectorAll('div[data-id="teamMember"]');
+
+		expect(getAllTeamMembers).toHaveBeenCalledTimes(1);
+		expect(warningMessageComponent.innerHTML).toBe(LABELS.NoTeamSelectedWarning);
+		expect(teamMembers.length).toBe(0);
+	});
+
 });
