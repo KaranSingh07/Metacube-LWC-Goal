@@ -114,4 +114,31 @@ describe('TeamsMemberList Component', () => {
 		expect(teamMembers.length).toBe(0);
 	});
 
+	it('Should show correct team members when a team is selected that have members, should not show warning message', async () => {
+		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// When
+		const selectTeamCombobox = component.shadowRoot.querySelector(
+			'lightning-combobox[data-id="memberTeam"]'
+		);
+		selectTeamCombobox.dispatchEvent(new CustomEvent('change', { detail: { value: 'ind' } }));
+		await flushPromises();
+
+		// Then
+		const warningMessageComponent = component.shadowRoot.querySelector(
+			'label[data-id="warningMessage"]'
+		);
+		const teamMembers = component.shadowRoot.querySelectorAll('div[data-id="teamMember"]');
+
+		expect(getAllTeamMembers).toHaveBeenCalledTimes(1);
+		expect(warningMessageComponent).toBe(null);
+		expect(teamMembers.length).toBe(3);
+		expect(teamMembers).toMatchSnapshot();
+	});
 });
