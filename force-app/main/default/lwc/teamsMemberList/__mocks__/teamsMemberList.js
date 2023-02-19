@@ -19,4 +19,6 @@ export default class TeamsMemberList extends LightningElement {
 	set teams(value) {
 		this.state.teams = value;
 	}
+
+	@api syncData() {}
 }
