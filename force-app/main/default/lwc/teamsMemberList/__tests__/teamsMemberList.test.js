@@ -2,11 +2,23 @@ import TeamsMemberList from 'c/teamsMemberList';
 import { createElement } from 'lwc';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { setImmediate } from 'timers';
-import { createRecord } from 'lightning/uiRecordApi';
+import { LABELS } from '../labels';
+import getAllTeamMembers from '@salesforce/apex/TeamController.getAllTeamMembers';
+
+jest.mock(
+	'@salesforce/apex/TeamController.getAllTeamMembers',
+	() => {
+		return {
+			default: jest.fn(),
+		};
+	},
+	{ virtual: true }
+);
 
 expect.extend(toHaveNoViolations);
 
 const mockTeams = require('./data/teams.json');
+const mockTeamMembers = require('./data/teamMembers.json');
 const LIGHTNING_SHOWTOAST_EVENT_NAME = 'lightning__showtoast';
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
@@ -26,6 +38,7 @@ describe('TeamsMemberList Component', () => {
 
 	it('Should be accessible', async () => {
 		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
 		const component = createComponent();
 		component.teams = mockTeams;
 
@@ -38,6 +51,7 @@ describe('TeamsMemberList Component', () => {
 
 	it('Should populate teams in memberTeam combobox when component is loaded', async () => {
 		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
 		const component = createComponent();
 		component.teams = mockTeams;
 
