@@ -87,4 +87,31 @@ describe('TeamsMemberList Component', () => {
 		expect(teamMembers.length).toBe(0);
 	});
 
+	it('Should show correct warning message when a team is selected that do not have any members, should not show team members', async () => {
+		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// When
+		const selectTeamCombobox = component.shadowRoot.querySelector(
+			'lightning-combobox[data-id="memberTeam"]'
+		);
+		selectTeamCombobox.dispatchEvent(new CustomEvent('change', { detail: { value: 'aus' } }));
+		await flushPromises();
+
+		// Then
+		const warningMessageComponent = component.shadowRoot.querySelector(
+			'label[data-id="warningMessage"]'
+		);
+		const teamMembers = component.shadowRoot.querySelectorAll('div[data-id="teamMember"]');
+
+		expect(getAllTeamMembers).toHaveBeenCalledTimes(1);
+		expect(warningMessageComponent.innerHTML).toBe(LABELS.NoTeamMembersExistsWarning);
+		expect(teamMembers.length).toBe(0);
+	});
+
 });
