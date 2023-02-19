@@ -18,7 +18,7 @@
 			>
 				<template for:each={filteredTeamMembers} for:item="member">
 					<li key={member.Id} class="slds-item">
-						<div class="tile">
+						<div class="tile" data-id="teamMember">
 							<p>{member.Name}</p>
 							<p>{member.TeamName}</p>
 							<p>{member.Skills}</p>
@@ -26,7 +26,10 @@
 					</li>
 				</template>
 			</ul>
-			<label class="slds-p-around_x-small slds-var-p-around_medium" if:false={showTeamMembers}
+			<label
+				data-id="warningMessage"
+				class="slds-p-around_x-small slds-var-p-around_medium"
+				if:false={showTeamMembers}
 				>{warningMessage}</label
 			>
 		</div>
