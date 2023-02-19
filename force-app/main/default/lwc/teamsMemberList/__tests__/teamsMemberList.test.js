@@ -141,4 +141,38 @@ describe('TeamsMemberList Component', () => {
 		expect(teamMembers.length).toBe(3);
 		expect(teamMembers).toMatchSnapshot();
 	});
+
+	it('Should reset component to default, fetch team members again and show toast when syncData api is called', async () => {
+		// Given
+		getAllTeamMembers.mockResolvedValue(mockTeamMembers);
+		const toastHandler = jest.fn();
+
+		const component = createComponent();
+		component.teams = mockTeams;
+		component.addEventListener(LIGHTNING_SHOWTOAST_EVENT_NAME, toastHandler);
+
+		document.body.appendChild(component);
+		await flushPromises();
+
+		const selectTeamCombobox = component.shadowRoot.querySelector(
+			'lightning-combobox[data-id="memberTeam"]'
+		);
+		selectTeamCombobox.dispatchEvent(new CustomEvent('change', { detail: { value: 'ind' } }));
+		await flushPromises();
+
+		// When
+		component.syncData();
+		await flushPromises();
+
+		// Then
+		const warningMessageComponent = component.shadowRoot.querySelector(
+			'label[data-id="warningMessage"]'
+		);
+		const teamMembers = component.shadowRoot.querySelectorAll('div[data-id="teamMember"]');
+
+		expect(warningMessageComponent.innerHTML).toBe(LABELS.NoTeamSelectedWarning);
+		expect(teamMembers.length).toBe(0);
+		expect(getAllTeamMembers).toHaveBeenCalledTimes(2);
+		expect(toastHandler).toHaveBeenCalledTimes(1);
+	});
 });
