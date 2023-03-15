@@ -3,11 +3,12 @@ import { createElement } from 'lwc';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { setImmediate } from 'timers';
 import { createRecord } from 'lightning/uiRecordApi';
+import { LABELS } from '../labels';
+import { ShowToastEventName } from 'lightning/platformShowToastEvent';
 
 expect.extend(toHaveNoViolations);
 
 const mockTeams = require('./data/teams.json');
-const LIGHTNING_SHOWTOAST_EVENT_NAME = 'lightning__showtoast';
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const createComponent = () => {
@@ -110,7 +111,7 @@ describe('TeamsCreateMember Component', () => {
 
 		const mockToastHandler = jest.fn();
 		const mockSyncDataHandler = jest.fn();
-		component.addEventListener(LIGHTNING_SHOWTOAST_EVENT_NAME, mockToastHandler);
+		component.addEventListener(ShowToastEventName, mockToastHandler);
 		component.addEventListener('syncdata', mockSyncDataHandler);
 
 		await flushPromises();
@@ -144,6 +145,11 @@ describe('TeamsCreateMember Component', () => {
 
 		// Then
 		expect(mockToastHandler).toHaveBeenCalled();
+		expect(mockToastHandler.mock.calls[0][0].detail).toStrictEqual({
+			message: LABELS.TeamMemberCreated,
+			title: LABELS.ToastSuccessTitle,
+			variant: 'success',
+		});
 		expect(mockSyncDataHandler).toHaveBeenCalled();
 	});
 
