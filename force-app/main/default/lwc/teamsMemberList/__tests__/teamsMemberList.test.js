@@ -3,6 +3,7 @@ import { createElement } from 'lwc';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { setImmediate } from 'timers';
 import { LABELS } from '../labels';
+import { ShowToastEventName } from 'lightning/platformShowToastEvent';
 import getAllTeamMembers from '@salesforce/apex/TeamController.getAllTeamMembers';
 
 jest.mock(
@@ -19,7 +20,6 @@ expect.extend(toHaveNoViolations);
 
 const mockTeams = require('./data/teams.json');
 const mockTeamMembers = require('./data/teamMembers.json');
-const LIGHTNING_SHOWTOAST_EVENT_NAME = 'lightning__showtoast';
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const createComponent = () => {
@@ -64,6 +64,33 @@ describe('TeamsMemberList Component', () => {
 			'lightning-combobox[data-id="memberTeam"]'
 		);
 		expect(memberTeamCombobox.options).toStrictEqual(mockTeams);
+	});
+
+	it('Should show error toast when there is an error while fetching team members, should not show team members', async () => {
+		// Given
+		const mockErrorResponce = { error: 'Something went wrong while fetching team members' };
+		getAllTeamMembers.mockRejectedValue(mockErrorResponce);
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		const toastHandler = jest.fn();
+		component.addEventListener(ShowToastEventName, toastHandler);
+
+		// When
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// Then
+		const teamMembers = component.shadowRoot.querySelectorAll('div[data-id="teamMember"]');
+
+		expect(getAllTeamMembers).toHaveBeenCalledTimes(1);
+		expect(teamMembers.length).toBe(0);
+		expect(toastHandler).toHaveBeenCalledTimes(1);
+		expect(toastHandler.mock.calls[0][0].detail).toStrictEqual({
+			message: mockErrorResponce,
+			title: LABELS.ToastErrorTitle,
+			variant: 'error',
+		});
 	});
 
 	it('Should show correct default warning message when no team is selected, should not show team members', async () => {
@@ -149,7 +176,7 @@ describe('TeamsMemberList Component', () => {
 
 		const component = createComponent();
 		component.teams = mockTeams;
-		component.addEventListener(LIGHTNING_SHOWTOAST_EVENT_NAME, toastHandler);
+		component.addEventListener(ShowToastEventName, toastHandler);
 
 		document.body.appendChild(component);
 		await flushPromises();
@@ -174,5 +201,10 @@ describe('TeamsMemberList Component', () => {
 		expect(teamMembers.length).toBe(0);
 		expect(getAllTeamMembers).toHaveBeenCalledTimes(2);
 		expect(toastHandler).toHaveBeenCalledTimes(1);
+		expect(toastHandler.mock.calls[0][0].detail).toStrictEqual({
+			message: LABELS.TeamMembersSynced,
+			title: LABELS.ToastSuccessTitle,
+			variant: 'success',
+		});
 	});
 });
