@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TeamsCreateMember Component Should populate correct UI 1`] = `
+<c-teams-create-member>
+  #shadow-root(open)
+    <lightning-card>
+      #shadow-root(open)
+        <slot />
+        <slot
+          name="actions"
+        />
+        <slot
+          name="footer"
+        />
+        <slot
+          name="title"
+        />
+      <div
+        class="slds-grid slds-grid_vertical slds-var-p-around_medium"
+      >
+        <div
+          class="slds-col"
+        >
+          <lightning-input
+            data-id="memberName"
+          >
+            #shadow-root(open)
+          </lightning-input>
+        </div>
+        <div
+          class="slds-col"
+        >
+          <lightning-combobox
+            data-id="memberTeam"
+          >
+            #shadow-root(open)
+          </lightning-combobox>
+        </div>
+        <div
+          class="slds-col"
+        >
+          <lightning-input
+            data-id="memberSkills"
+          >
+            #shadow-root(open)
+          </lightning-input>
+        </div>
+        <div
+          class="slds-col slds-var-p-vertical_medium"
+        >
+          <lightning-button
+            class="slds-var-m-left_x-small"
+            title="createMember"
+          >
+            #shadow-root(open)
+          </lightning-button>
+        </div>
+      </div>
+    </lightning-card>
+</c-teams-create-member>
+`;

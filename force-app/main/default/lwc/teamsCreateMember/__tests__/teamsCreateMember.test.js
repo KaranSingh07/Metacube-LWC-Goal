@@ -43,6 +43,19 @@ describe('TeamsCreateMember Component', () => {
 		expect(await axe(component)).toHaveNoViolations();
 	});
 
+	it('Should populate with correct UI', async () => {
+		// Given
+		const component = createComponent();
+		component.teams = mockTeams;
+
+		// When
+		document.body.appendChild(component);
+		await flushPromises();
+
+		// Then
+		expect(component).toMatchSnapshot();
+	});
+
 	it('Should populate teams in memberTeam combobox when component is loaded', async () => {
 		// Given
 		const component = createComponent();
