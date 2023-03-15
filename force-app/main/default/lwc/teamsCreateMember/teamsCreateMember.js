@@ -35,7 +35,7 @@ export default class TeamsCreateMember extends LightningElement {
 			})
 			.catch((error) => {
 				this.isError = true;
-				this.showErrorToast(LABELS.ToastErrorTitle, JSON.stringify(error));
+				this.showErrorToast(LABELS.ToastErrorTitle, JSON.parse(JSON.stringify(error)));
 			})
 			.finally(() => {
 				this.showSpinner(false);

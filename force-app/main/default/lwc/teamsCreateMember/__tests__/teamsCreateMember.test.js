@@ -157,13 +157,14 @@ describe('TeamsCreateMember Component', () => {
 		// Given
 		const component = createComponent();
 		component.teams = mockTeams;
-		createRecord.mockRejectedValue({});
+		const errorResponse = { error: 'Something went wrong while Saving the record' };
+		createRecord.mockRejectedValue(errorResponse);
 
 		document.body.appendChild(component);
 
 		const mockToastHandler = jest.fn();
 		const mockSyncDataHandler = jest.fn();
-		component.addEventListener(LIGHTNING_SHOWTOAST_EVENT_NAME, mockToastHandler);
+		component.addEventListener(ShowToastEventName, mockToastHandler);
 		component.addEventListener('syncdata', mockSyncDataHandler);
 
 		await flushPromises();
@@ -197,6 +198,11 @@ describe('TeamsCreateMember Component', () => {
 
 		// Then
 		expect(mockToastHandler).toHaveBeenCalled();
+		expect(mockToastHandler.mock.calls[0][0].detail).toStrictEqual({
+			message: errorResponse,
+			title: LABELS.ToastErrorTitle,
+			variant: 'error',
+		});
 		expect(mockSyncDataHandler).not.toHaveBeenCalled();
 	});
 });
