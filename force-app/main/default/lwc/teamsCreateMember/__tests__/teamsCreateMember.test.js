@@ -16,6 +16,12 @@ const createComponent = () => {
 	});
 };
 
+const mockFields = {
+	Name: 'Sachin Tendulkar',
+	Skills__c: 'Batting',
+	Team__c: 'ind',
+};
+
 describe('TeamsCreateMember Component', () => {
 	afterEach(() => {
 		while (document.body.firstChild) {
@@ -23,12 +29,6 @@ describe('TeamsCreateMember Component', () => {
 		}
 		jest.clearAllMocks();
 	});
-
-	const mockFields = {
-		Name: 'Sachin Tendulkar',
-		Skills__c: 'Batting',
-		Team__c: 'ind',
-	};
 
 	it('Should be accessible', async () => {
 		// Given
