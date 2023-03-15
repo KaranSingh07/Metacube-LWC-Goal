@@ -2,6 +2,8 @@ import Teams from 'c/teams';
 import { createElement } from 'lwc';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { setImmediate } from 'timers';
+import { ShowToastEventName } from 'lightning/platformShowToastEvent';
+import { LABELS } from '../labels.js';
 import { getTeams } from '@salesforce/apex/TeamController.getTeams';
 
 expect.extend(toHaveNoViolations);
@@ -19,7 +21,6 @@ jest.mock('c/teamsCreateMember');
 jest.mock('c/teamsMemberList');
 
 const mockTeams = require('./data/teams.json');
-const LIGHTNING_SHOWTOAST_EVENT_NAME = 'lightning__showtoast';
 const flushPromises = () => new Promise((resolve) => setImmediate(resolve));
 
 const createComponent = () => {
@@ -85,7 +86,7 @@ describe('Teams Component', () => {
 		// When
 		document.body.appendChild(component);
 		const mockShowToastHandler = jest.fn();
-		component.addEventListener(LIGHTNING_SHOWTOAST_EVENT_NAME, mockShowToastHandler);
+		component.addEventListener(ShowToastEventName, mockShowToastHandler);
 
 		await flushPromises();
 
@@ -98,6 +99,11 @@ describe('Teams Component', () => {
 		expect(teamsMemberListComponent).toBe(null);
 
 		expect(mockShowToastHandler).toHaveBeenCalledTimes(1);
+		expect(mockShowToastHandler.mock.calls[0][0].detail).toStrictEqual({
+			message: mockError.body.message,
+			title: LABELS.ToastErrorTitle,
+			variant: 'error',
+		});
 	});
 
 	it('Should handle syncdata event when received', async () => {
